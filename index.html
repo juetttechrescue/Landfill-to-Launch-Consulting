@@ -95,8 +95,8 @@
   .alt{background:var(--paper-2);}
   .sec-head{max-width:60ch;margin-bottom:52px;}
   .sec-head h2{font-size:clamp(2rem,4.2vw,3.2rem);}
-  /* hold optical size down on headings so Fraunces uses its text-style letterforms */
-  h2,h3{font-optical-sizing:none;font-variation-settings:"opsz" 26;}
+  /* hold optical size down and pin Fraunces' quirk axes so headings use its plain text-style letterforms */
+  h2,h3{font-optical-sizing:none;font-variation-settings:"opsz" 9,"SOFT" 0,"WONK" 0;}
   .sec-head p{color:var(--muted);font-size:1.12rem;margin-top:20px;max-width:56ch;}
   /* prose indentation: first paragraph flush, following paragraphs indented */
   .val-lead p,
@@ -323,7 +323,7 @@
   <div class="wrap">
     <p class="eyebrow rev hero-eyebrow">A student-run business you can start · E-Waste Business Consulting</p>
     <h1 class="rev hero-h1">There's piles of <span class="grn">money</span> hidden in <span class="grn">your</span> community's waste streams.</h1>
-    <p class="hero-sub rev"><strong>Capitalize on it Now.</strong> If you are in high school, this is how you start a real electronic-waste pickup business in your own town. You earn real money, and you walk away with real-world leadership experience: business operations and management, market analysis, sales and customer relations, and genuine relationships with business owners and residents. That is entrepreneurial experience that stands on a resume and turns into skills you use in college, while you fill a real gap in your community. I hand you the proven playbook, so you skip the trial and error I went through.</p>
+    <p class="hero-sub rev"><strong>Capitalize on it Now.</strong> If you are in high school or college, this is how you start a real electronic-waste pickup business in your own town. You earn real money, and you walk away with real-world leadership experience: business operations and management, market analysis, sales and customer relations, and genuine relationships with business owners and residents. That is entrepreneurial experience that stands on a resume and turns into skills you use in college, while you fill a real gap in your community. I hand you the proven playbook, so you skip the trial and error I went through.</p>
     <div class="hero-cta rev">
       <a href="#qualify" class="btn btn-solid">Start with the free questions</a>
       <a href="#packages" class="btn btn-ghost">See the packages</a>
@@ -334,14 +334,6 @@
       <path class="traj-head" d="M1055 24 l-33 3.5 l16 17.5 z" />
     </svg>
 
-    <p class="proof-lead rev">Here is what that looked like in my own market, in the first few months:</p>
-    <div class="proof rev">
-      <div class="proof-item"><div class="proof-num">59<span style="font-size:18px;">+</span></div><div class="proof-lab">Pickups and counting</div></div>
-      <div class="proof-item"><div class="proof-num">2,000<span style="font-size:18px;">+</span></div><div class="proof-lab">Pounds diverted from landfills</div></div>
-      <div class="proof-item"><div class="proof-num">✓</div><div class="proof-lab">Signed B2B with an industry leader</div></div>
-      <div class="proof-item"><div class="proof-num">★</div><div class="proof-lab">Front Page Local-Regional Newspaper Feature</div></div>
-    </div>
-    <p class="live-metrics rev">See the live pickup count and pounds diverted at <a href="https://juetttechrescue.org" target="_blank" rel="noopener">juetttechrescue.org</a></p>
   </div>
 </header>
 
@@ -369,6 +361,28 @@
   </div>
 </section>
 
+<!-- FOUNDER -->
+<section id="founder" class="founder">
+  <div class="wrap">
+    <p class="eyebrow rev">About</p>
+    <h2 class="rev"><a class="name-link" href="https://www.linkedin.com/in/natalie-juett-723a053ba/" target="_blank" rel="noopener">Natalie Juett</a></h2>
+    <p class="roles rev">Founder, Landfill to Launch Consulting &middot; Chief Rescue Officer, Juett Tech Rescue LLC</p>
+    <div class="founder-body">
+      <p class="rev">I am a junior at CU Boulder studying economics and political science, concentrated in market research. My coursework in quantitative research methods, macroeconomics and microeconomics, law and society, and geographic sustainability and futures gave me the analytical framework I now apply to this industry: how to size a market, read demand, and find the segment no one is serving.</p>
+      <p class="rev">Applying that framework to electronic waste surfaced the opportunity. E-waste is the fastest-growing solid waste stream on earth, and demand is compounding as household device ownership rises. Inside that growth sits a submarket almost no one has entered: community-based streams, meaning residents and small businesses. Where e-waste is being addressed head-on, it is addressed at the enterprise scale. Around the edges are general junk haulers, some recycling facilities, and a few niche tech-focused businesses, none of them built to accept all tech, at volume, aimed directly at a community. Add the regulatory picture, no federal blanket ban on landfilling electronics and requirements that shift state to state, and you get a market that is large, growing, and structurally underserved.</p>
+      <p class="rev span-wide">What I want is for you to come out of this with something that carries weight: not a line you have to explain away, but a business you actually ran. Revenue you earned, customers you acquired, and decisions you made yourself. That is what people remember you for, on an application and in the room.</p>
+      <p class="big rev">That gap is the opportunity. Juett Tech Rescue is how I proved the model in one market. Landfill to Launch is how I help you build it in yours.</p>
+    </div>
+    <div class="founder-arc rev">
+      <div class="arc-step"><span class="arc-when">The start</span><span class="arc-what">Built it from scratch</span></div>
+      <div class="arc-sep" aria-hidden="true">&rarr;</div>
+      <div class="arc-step"><span class="arc-when">Roughly 2 months in</span><span class="arc-what">Front-page newspaper feature</span></div>
+      <div class="arc-sep" aria-hidden="true">&rarr;</div>
+      <div class="arc-step"><span class="arc-when">2 months after that</span><span class="arc-what">Signed a B2B with a titan in the industry</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
   <div class="wrap">
@@ -390,8 +404,8 @@
       <div class="rev">
         <p class="eyebrow" style="margin-bottom:16px;">In the first several months, the company has</p>
         <ul class="track-list">
-          <li><span class="mk">—</span> Completed 41 residential pickups</li>
-          <li><span class="mk">—</span> Diverted more than 1,600 pounds of electronics from local landfills</li>
+          <li><span class="mk">—</span> Completed over 50 residential pickups, with commercial clients now in planning</li>
+          <li><span class="mk">—</span> Diverted more than 2,000 pounds of electronics from local landfills</li>
           <li><span class="mk">—</span> Earned a front-page feature in the Boulder Daily Camera, a local-regional newspaper</li>
           <li><span class="mk">—</span> Exhibited at the Boulder Creek Festival through a creatively negotiated vendor arrangement that cut exhibition costs significantly</li>
           <li><span class="mk">—</span> Registered as a Colorado LLC</li>
@@ -399,28 +413,6 @@
           <li><span class="mk">—</span> Now discussing commercial contracts under a new national partnership</li>
         </ul>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOUNDER -->
-<section id="founder" class="founder">
-  <div class="wrap">
-    <p class="eyebrow rev">About</p>
-    <h2 class="rev"><a class="name-link" href="https://www.linkedin.com/in/natalie-juett-723a053ba/" target="_blank" rel="noopener">Natalie Juett</a></h2>
-    <p class="roles rev">Founder, Landfill to Launch Consulting &middot; Chief Rescue Officer, Juett Tech Rescue LLC</p>
-    <div class="founder-body">
-      <p class="rev">I am a junior at CU Boulder studying economics and political science, with a real interest in market research. During my time in college I have taken quantitative research methods, macroeconomics and microeconomics, law and society, and geographic sustainability and futures, all of which helped me build the knowledge behind this. That is what pulled me here: I started paying attention to electronic waste when I realized almost no one was targeting community-based streams, meaning residents and small businesses, head-on.</p>
-      <p class="rev">Options exist around the edges: general junk haulers, some recycling facilities, a few niche tech-focused businesses. Where electronic waste is being targeted head-on, it is almost entirely at the enterprise scale. That is exactly where community-based operations, meaning us, come in. Broad-scale e-waste pickup built to take all tech, aimed directly at a community, is not being done. There is no federal blanket ban on sending electronics to landfill, so the logistics are inconsistent from one state to the next. Even where it is regulated, it often is not addressed directly. And it is the fastest-growing municipal waste stream in the world.</p>
-      <p class="rev span-wide">What I want is for you to come out of this with something that carries weight. Not a line you have to explain away, but a business you actually ran: revenue you earned, customers you found, and decisions you had to make yourself. That is the kind of thing people remember you for, on an application and in the room.</p>
-      <p class="big rev">That gap is the opportunity. Juett Tech Rescue is how I proved the model in one market. Landfill to Launch is how I help you build it in yours.</p>
-    </div>
-    <div class="founder-arc rev">
-      <div class="arc-step"><span class="arc-when">The start</span><span class="arc-what">Built it from scratch</span></div>
-      <div class="arc-sep" aria-hidden="true">&rarr;</div>
-      <div class="arc-step"><span class="arc-when">Roughly 2 months in</span><span class="arc-what">Front-page newspaper feature</span></div>
-      <div class="arc-sep" aria-hidden="true">&rarr;</div>
-      <div class="arc-step"><span class="arc-when">2 months after that</span><span class="arc-what">Signed a B2B with a titan in the industry</span></div>
     </div>
   </div>
 </section>
@@ -491,7 +483,7 @@
         <ul>
           <li><b>Executive summary</b> and a clear go or no-go verdict</li>
           <li><b>Regulatory snapshot:</b> your state's landfill rules, data-handling and compliance basics</li>
-          <li><b>Market &amp; community analysis:</b> population, density, income, homeownership, HOA and condo concentration, best-fit neighborhoods</li>
+          <li><b>Market &amp; community analysis:</b> population, density, income, homeownership, and where the customer opportunity sits: residential bundling strategies and best-fit neighborhoods</li>
           <li><b>Competitive landscape:</b> existing recycling options, municipal programs, drop-off sites, mobile competitors, and the gaps</li>
           <li><b>Customer opportunity:</b> strategic residential bundling tactics</li>
           <li><b>Service territory:</b> where to launch, neighborhood priority, and logistics</li>
@@ -510,7 +502,7 @@
         <p class="incl">Everything in Package One, plus</p>
         <ul>
           <li><b>Launch framework:</b> sequence, website and local search, social, payments, scheduling, 30 and 90-day plans</li>
-          <li><b>Marketing &amp; acquisition:</b> digital and grassroots, community events, referrals, and targeted density maps of your best demographics</li>
+          <li><b>Marketing &amp; acquisition:</b> digital and grassroots, community events, referrals, and data-backed target client density maps of your best demographics</li>
           <li><b>Community outreach playbook:</b> target communities, decision-maker contacts, outreach, and answers to common objections</li>
           <li><b>Partnership &amp; media outreach:</b> which partners to approach, which to decline, when to sign, and story angles for press</li>
           <li><b>Operational workflow:</b> scheduling, route planning, storage, and time management alongside school or work</li>
