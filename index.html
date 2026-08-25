@@ -155,6 +155,16 @@ img{display:block}
 .pitem:last-child{margin-bottom:0}
 .pitem b{font-weight:700;margin-right:7px}
 .pitem span{color:var(--grey)}
+.fbk{margin:26px 44px 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+ border:1px solid var(--rule);background:#fff;padding:14px 17px}
+.fq{font-size:14.5px;font-weight:600}
+.fb{background:none;border:1px solid var(--rule);padding:6px 14px;font-size:13.5px;color:var(--ink);cursor:pointer}
+.fb:hover{border-color:var(--moss);color:var(--moss)}
+.fnote{display:none;gap:8px;align-items:center;flex:1;min-width:230px}
+.fnote.on{display:flex}
+.fnote input{flex:1;min-width:0;border:0;border-bottom:1.5px solid var(--rule);padding:7px 0;
+ font-family:inherit;font-size:14px;outline:0;background:none;color:var(--ink)}
+.fnote input:focus{border-bottom-color:var(--moss)}
 .lookup{margin:20px 44px 0;font-size:14px;color:var(--grey);line-height:1.6}
 .lcap{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey2);margin-right:8px}
 .row{display:grid;grid-template-columns:52px 1fr 168px;gap:0 20px;padding:22px 0 20px;border-bottom:1px solid var(--rule2);position:relative}
@@ -247,7 +257,7 @@ img{display:block}
  .mhead{padding:18px 18px 0}
  .mhead h1{font-size:clamp(25px,7vw,32px);margin:6px 0 14px}
  .rows{padding:0 18px}
- .prep,.lookup{margin-left:18px;margin-right:18px}.foot,.doc{padding:20px 18px 54px}
+ .prep,.lookup,.fbk{margin-left:18px;margin-right:18px}.foot,.doc{padding:20px 18px 54px}
  .row{grid-template-columns:32px 1fr;gap:0 12px;padding:19px 0 17px}
  .rk{font-size:23px}
  .fit i{width:32px}
@@ -365,6 +375,11 @@ img{display:block}
       <div class="prep" id="prep" style="display:none"></div>
       <div class="rows" id="rows"></div>
       <div class="lookup" id="lookup" style="display:none"></div>
+      <div class="fbk" id="fbk">
+        <span class="fq" id="fq">Did Revivo help you sort this out?</span>
+        <span id="fbtns"><button class="fb" id="fyes">Yes</button><button class="fb" id="fno">Not really</button></span>
+        <span class="fnote" id="fnote"><input id="ftext" placeholder="What should it have said? (optional)" maxlength="240"><button class="fb" id="fsend">Send</button></span>
+      </div>
       <div class="foot"><p id="why"></p><div id="ruled"></div></div>
     </div>
     <div id="viewWhy" style="display:none" class="doc">
@@ -542,11 +557,12 @@ let mode="up", busy=false;
 function setMode(m){mode=m;
  $("tUp").setAttribute("aria-selected",m==="up");$("tIn").setAttribute("aria-selected",m==="in");
  $("fNm").style.display=m==="up"?"":"none";
+ $("fCity").style.display=m==="up"?"":"none";
  $("aH").textContent=m==="up"?"Start today":"Welcome back";
  $("aS").textContent=m==="up"?"Free. This is the community test.":"Sign in to pick up where you left off.";
  $("go").textContent=m==="up"?"Create account":"Sign in";
- ["eNm","eEm","ePw"].forEach(x=>$(x).classList.remove("on"));
- ["nm","em","pw"].forEach(x=>$(x).removeAttribute("aria-invalid"));}
+ ["eNm","eCity","eEm","ePw"].forEach(x=>$(x).classList.remove("on"));
+ ["nm","city","em","pw"].forEach(x=>$(x).removeAttribute("aria-invalid"));}
 $("tUp").onclick=()=>setMode("up");$("tIn").onclick=()=>setMode("in");
 /* ---- everything below writes to Supabase. All fire-and-forget:
        a database hiccup must never break the page for a resident. ---- */
@@ -603,12 +619,15 @@ async function go(){
   const r = mode==="up"
     ? await sb.auth.signUp({email:em,password:pw,options:{data:{full_name:nm}}})
     : await sb.auth.signInWithPassword({email:em,password:pw});
-  if(r.error){ notice(r.error.message,true); return; }
+  if(r.error){ notice(/confirm/i.test(r.error.message||"")
+      ? "That account exists, but the email has not been confirmed yet. Open the link sent to "+em+", then sign in."
+      : r.error.message, true); return; }
   if(mode==="up" && !r.data.session){
     notice("Account created. Check "+em+" for a confirmation link, then sign in.");
     setMode("in"); return;
   }
   S.city=$("city").value||S.city;
+  saveProfile(r.data.user);
   enterApp(whoFrom(r.data.user));
  }catch(e){
   notice("Could not reach the server. Check your connection and try again.",true);
@@ -715,7 +734,9 @@ function render(){
  const GRPS=[...new Set(GOALS.map(g=>g.g))].concat(["Combine"]);
  const cur=GOALS.find(g=>g.id===S.goal);
  S.grp=S.grp||cur.g;
- if(!GOALS.some(g=>g.g===S.grp&&g.id===S.goal))S.goal=GOALS.find(g=>g.g===S.grp).id;
+ if(S.grp!=="Combine" && !GOALS.some(g=>g.g===S.grp&&g.id===S.goal)){
+   const first=GOALS.find(g=>g.g===S.grp); if(first) S.goal=first.id;
+ }
  $("grps").innerHTML="";
  GRPS.forEach(gr=>{const b=document.createElement("button");
   b.className="gp"+(gr===S.grp?" on":"");b.textContent=gr==="Combine"?"\u229E Rank up to 3":gr; if(gr==="Combine")b.classList.add("gprank");
@@ -789,6 +810,10 @@ function render(){
    n:p.n,org:p.org,where:p.where,d:p.d,url:p.url||"",cost:p.cost,rev:0,hi:0,p:1,
    days:p.days,eff:p.eff,rec:p.rec,ch:1,lo:2,co:1,rc_:0,
    whole:p.rec>=4?3:(p.rec>=3?2:1),carbon:3,cert:2,zlf:p.rec>=2?1:0,mine:true}));
+ // A town's programmes belong to that town. Anything a previous town added
+ // has to come off first, or switching from Longmont to Lyons leaves the
+ // Longmont drop-offs sitting on the item wearing a "Your town" tag.
+ S.item.opts=S.item.opts.filter(o=>!o.mine);
  if(CP.length){
    const have=new Set(S.item.opts.map(o=>o.n));
    S.item.opts=S.item.opts.concat(CP.filter(c=>!have.has(c.n)));
@@ -887,13 +912,23 @@ function render(){
    lk.querySelector(".ltxt").textContent=o.d;
    if(o.url) lk.querySelector("a").href=o.url;
  } else lk.style.display="none";
- $("fq").textContent="Did Revivo help you sort this out?";
- $("fbtns").style.display=""; $("fnote").classList.remove("on"); $("ftext").value="";
+ if($("fq")){
+   $("fq").textContent="Did Revivo help you sort this out?";
+   $("fbtns").style.display=""; $("fnote").classList.remove("on"); $("ftext").value="";
+ }
  logSearch();
- if(!RM)[...host.children].forEach(el=>{
+ const CAN_ANIM = typeof Element!=="undefined" && !!Element.prototype.animate;
+ if(!RM&&CAN_ANIM)[...host.children].forEach(el=>{
   const was=before.get(el.dataset.k),now=el.getBoundingClientRect().top;
   if(was!=null&&Math.abs(was-now)>1)el.animate([{transform:"translateY("+(was-now)+"px)"},{transform:"none"}],{duration:400,easing:"cubic-bezier(.2,.85,.25,1)"});
   else if(was==null)el.animate([{opacity:0},{opacity:1}],{duration:220});});
 }
 </script>
+
+<!-- The live layer. revivo-data.js is the baked-in floor: real dates, real
+     distances, opening days, holidays and all eleven towns, with no database
+     needed. live.js uses it, and hands over to Supabase the moment Supabase
+     answers. If both are missing the page above still works exactly as it did. -->
+<script src="revivo-data.js"></script>
+<script src="live.js"></script>
 </body></html>
